@@ -6,15 +6,7 @@ phases:
       # Build your Lambda code here
       - zip -r my-lambda-package.zip .*/
 
-artifacts:
-  files:
-    - my-lambda-package.zip
-
-  # Add deployment step
   post_build:
     commands:
-      # Copy the Lambda package to an S3 bucket
       - aws s3 cp my-lambda-package.zip s3://artifactsdatastore/
-
-      # Update the Lambda function code package
       - aws lambda update-function-code --function-name hello_world --s3-bucket artifactsdatastore --s3-key my-lambda-package.zip
